@@ -80,6 +80,9 @@ message SimpleRequest {
 
   // Whether SimpleResponse should include server_id.
   bool fill_server_id = 9;
+
+  // Whether SimpleResponse should include grpclb_path.
+  bool fill_grpclb_path = 10;
 }
 
 // Unary response, as configured by the request.
@@ -94,6 +97,13 @@ message SimpleResponse {
   // Server ID. This must be unique among different server instances,
   // but the same across all RPC's made to a particular server instance.
   string server_id = 4;
+  // gRPCLB Path. This takes the value of either "fallback" or "backend".
+  // The server must fill in "fallback" if it detects that the RPC reached
+  // the server via the "gRPCLB fallback" path, and "backend" if it detects
+  // that the RPC reached the server via "gRPCLB backend" path (i.e. if it got
+  // the address of this server from the gRPCLB server BalanceLoad RPC). Exactly
+  // how this detection is done is server dependant.
+  string grpclb_path = 5;
 }
 
 // Client-streaming request.
